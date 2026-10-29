@@ -16,6 +16,7 @@ def escolher(v):
     menor = v[0]
     maior = v[0]
     inversoes = 0
+    negativos = False
 
     for i in range(n):
         if v[i] < menor:
@@ -24,21 +25,24 @@ def escolher(v):
         if v[i] > maior:
             maior = v[i]
 
+        if v[i] < 0:
+            negativos = True
+
         if i > 0 and v[i] < v[i - 1]:
             inversoes += 1
-
-    faixa = maior - menor + 1
 
     if inversoes <= n // 20:
         return ordenar_insercao
 
-    if faixa <= max(1000, n * 5):
-        return ordenar_contagem
-
     if n < 100:
         return ordenar_hibrida
 
-    if faixa > 0 and all(x >= 0 for x in v):
+    faixa = maior - menor + 1
+
+    if faixa < n:
+        return ordenar_contagem
+
+    if not negativos:
         return ordenar_base
 
     return ordenar_intercalacao
